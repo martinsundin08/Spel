@@ -1,0 +1,91 @@
+
+
+# class Roller_stats():
+#     def __init__(self, start_kraft, start_liv, start_pungsäck):
+#         self.kraft = start_kraft
+#         self.liv = start_liv
+#         self.start_pungsäck = start_pungsäck
+
+# pungråtta = Roller_stats(0.7, 1, 8)
+
+# lennart_bladh = Roller_stats(1.4, 1.5, 5)
+
+# fritidschefen = Roller_stats(1, 1, 2)
+
+
+#     try:
+#         val = int(input("hur många gånger ???"))
+#         print(val * 10)
+#     except:
+#         print("sluta!")
+
+def main():
+
+    import random as rand
+
+    class Player():
+        def __init__(self, name, power, hp, pungsäck, role):
+            self.name = name
+            self.power = power
+            self.hp = hp
+            self.pungsäck = pungsäck
+            self.role = role
+
+   
+    
+    print("Välkommen till äventyrsspelet. Du kommer att navigera i en grotta, slåss" \
+    " mot mantisar och samla skatter. \nMen se upp för satanisterna!")
+    player_name = input("Nu får du skapa en karaktär. vad heter du?\n")
+    
+
+    player1 = Player(0 ,0 ,0 ,0 ,0 )
+    while True:
+        role_choise = input("Nu får du välja vilken klass du ska vara resten av spelet, du kan välja mellan pungråtta 1, Lennart Bladh 2 och fritidschefen 3!(skriv siffran efter för att välja roll.)")
+        
+        if role_choise == "1":
+            player1 = Player(player_name, 0.7, 1, 8, "pungråtta")
+            break
+        elif role_choise == "2":
+            player1 = Player(player_name, 1.4, 1.5, 5, "Lennart Bladh")
+            break
+        elif role_choise == "3":
+            player1 = Player(player_name, 1, 1, 2, "Fritidschefen")
+            break
+        else:
+            print("Esnella välj en siffra mellan 1 och 3")
+
+    print(f"Halloj {player1.name}, du valde klassen {player1.role}")
+
+    player1_pungsäck = []
+
+    
+    
+    alive = True
+    
+
+    
+
+   
+   
+    while alive:
+        print("Vad vill du göra?")
+        val = input(""" 
+                    1. Gå genom portal  2. Kolla stats
+                    3. Öppna Pungsäck   4. Vila
+                    q. Avsluta spelet
+                """)
+        
+        if val == "1":
+            pass
+        elif val == "2":
+            pass
+        elif val == "3":
+            pass
+        elif val == "4":
+            pass
+        elif val == "q":
+            break
+        else:
+            print("Du måste välja något av valen i menyn")
+main()
+print("Spelet är slut.")
