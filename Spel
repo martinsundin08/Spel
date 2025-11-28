@@ -56,15 +56,17 @@ def main():
 
     print(f"Halloj {player1.name}, du valde klassen {player1.role}")
 
-    player1_pungsäck = []
+    
 
+    player1_pungsäck = []
     
     
+            
     alive = True
     
-
     
-
+    
+    
    
    
     while alive:
@@ -74,18 +76,36 @@ def main():
                     3. Öppna Pungsäck   4. Vila
                     q. Avsluta spelet
                 """)
+        def pungsäcksizecontroll():
+            if len(player1_pungsäck) > player1.pungsäck:
+                alive = False
+            else:
+                alive = True
+            return
+        
+        def pungsäckadd(a):
+            player1_pungsäck.append(a)
+            
+        return 
+        
+
         
         if val == "1":
-            pass
+            print(len(player1_pungsäck))
         elif val == "2":
             pass
         elif val == "3":
-            pass
+            print(player1_pungsäck)
+            for _ in range (1):
+                player1_pungsäck.append(1)
+            
+            
         elif val == "4":
             pass
         elif val == "q":
             break
         else:
             print("Du måste välja något av valen i menyn")
+        
 main()
 print("Spelet är slut.")
