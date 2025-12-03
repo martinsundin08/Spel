@@ -1,3 +1,5 @@
+import random as rand
+
 
 
 # class Roller_stats():
@@ -19,87 +21,102 @@
 #     except:
 #         print("sluta!")
 
+class Player():
+    def __init__(self, name, power, hp, pungsäck, role):
+        self.name = name
+        self.power = power
+        self.hp = hp
+        self.pungsäck = pungsäck
+        self.role = role
+
+Player1 = Player(0 ,0 ,0 ,0 ,0 )
+Player1_pungsäck = []
+# class Player_rest():
+#     def __init__(self, hp):
+#         self.max_hp = hp        # Max/start hp
+#         self.current_hp = hp    
+
+
+def pungsäckadd(a):
+     
+    return Player1_pungsäck.append(f"{a}")
+
+def pungsäcksizecontroll():
+    if len(Player1_pungsäck) > Player1.pungsäck:
+        return False
+    else:
+        return True
+
+def take_damage(hp, damage):
+    hp -= damage
+    if hp <= 0:
+        alive = False
+        return hp
+
+
+def heal(hp, max_hp, amount):
+    hp += amount
+    if hp >= max_hp:
+        hp = max_hp
+        return hp
+
 def main():
 
-    import random as rand
 
-    class Player():
-        def __init__(self, name, power, hp, pungsäck, role):
-            self.name = name
-            self.power = power
-            self.hp = hp
-            self.pungsäck = pungsäck
-            self.role = role
 
-   
     
     print("Välkommen till äventyrsspelet. Du kommer att navigera i en grotta, slåss" \
     " mot mantisar och samla skatter. \nMen se upp för satanisterna!")
-    player_name = input("Nu får du skapa en karaktär. vad heter du?\n")
+    Player_name = input("Nu får du skapa en karaktär. vad heter du?\n")
     
-
-    player1 = Player(0 ,0 ,0 ,0 ,0 )
     while True:
         role_choise = input("Nu får du välja vilken klass du ska vara resten av spelet, du kan välja mellan pungråtta 1, Lennart Bladh 2 och fritidschefen 3!(skriv siffran efter för att välja roll.)")
         
         if role_choise == "1":
-            player1 = Player(player_name, 0.7, 1, 8, "pungråtta")
+            Player1 = Player(Player_name, 0.7, 5, 8, "pungråtta")
             break
         elif role_choise == "2":
-            player1 = Player(player_name, 1.4, 1.5, 5, "Lennart Bladh")
+            Player1 = Player(Player_name, 1.4, 8, 5, "Lennart Bladh")
             break
         elif role_choise == "3":
-            player1 = Player(player_name, 1, 1, 2, "Fritidschefen")
+            Player1 = Player(Player_name, 1, 5, 2, "Fritidschefen")
             break
         else:
             print("Esnella välj en siffra mellan 1 och 3")
 
-    print(f"Halloj {player1.name}, du valde klassen {player1.role}")
+    print(f"Halloj {Player1.name}, du valde klassen {Player1.role}")
+
+    
+    max_hp = Player1.hp
+    current_hp = max_hp
+    # amount = 1
+    damage = rand.randint(1, 4)
 
     
 
-    player1_pungsäck = []
-    
-    
-            
     alive = True
-    
-    
-    
-    
-   
    
     while alive:
         print("Vad vill du göra?")
         val = input(""" 
                     1. Gå genom portal  2. Kolla stats
-                    3. Öppna Pungsäck   4. Vila
+                    3. Öppna Pungsäck   4. vila
                     q. Avsluta spelet
                 """)
-        def pungsäcksizecontroll():
-            if len(player1_pungsäck) > player1.pungsäck:
-                alive = False
-            else:
-                alive = True
-            return
-        
-        def pungsäckadd(a):
-            player1_pungsäck.append(a)
-            
-        return 
-        
-
+    
         
         if val == "1":
-            print(len(player1_pungsäck))
+            aj = take_damage(Player1.hp, damage)
+            print(aj)
         elif val == "2":
+            rest = heal(Player1.hp, max_hp, 1)
+            print(rest)
             pass
         elif val == "3":
-            print(player1_pungsäck)
-            for _ in range (1):
-                player1_pungsäck.append(1)
-            
-            
+            pungsäckadd("leogiganorma")
+            print(Player1_pungsäck)
+            alive = pungsäcksizecontroll()
+        
         elif val == "4":
             pass
         elif val == "q":
