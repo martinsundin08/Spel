@@ -42,7 +42,7 @@ def pungsäckadd(a):
     return Player1_pungsäck.append(f"{a}")
 
 def pungsäcksizecontroll():
-    if len(Player1_pungsäck) > Player1.pungsäck:
+    if len(Player1_pungsäck) < Player1.pungsäck:
         return False
     else:
         return True
@@ -118,7 +118,7 @@ def main():
             alive = pungsäcksizecontroll()
         
         elif val == "4":
-            pass
+            print(len(Player1_pungsäck))
         elif val == "q":
             break
         else:
