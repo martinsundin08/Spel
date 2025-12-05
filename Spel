@@ -22,43 +22,46 @@ import random as rand
 #         print("sluta!")
 
 class Player():
-    def __init__(self, name, power, hp, pungsäck, role):
+    def __init__(self, name, power, max_hp, max_pungsäcksize, role):
         self.name = name
         self.power = power
-        self.hp = hp
-        self.pungsäck = pungsäck
+        self.max_hp = max_hp 
+        self.max_pungsäcksize = max_pungsäcksize
         self.role = role
+        self.alive = True
+        self.pungsäck = []
+        self.hp = max_hp 
 
-Player1 = Player(0 ,0 ,0 ,0 ,0 )
-Player1_pungsäck = []
+
 # class Player_rest():
 #     def __init__(self, hp):
 #         self.max_hp = hp        # Max/start hp
 #         self.current_hp = hp    
 
 
-def pungsäckadd(a):
-     
-    return Player1_pungsäck.append(f"{a}")
+def pungsäckadd(Player1, a):
+    Player1.pungsäck.append(a)
+    return Player1
 
-def pungsäcksizecontroll():
-    if len(Player1_pungsäck) < Player1.pungsäck:
-        return False
-    else:
-        return True
+def pungsäcksizecontroll(Player1):
+    if len(Player1.pungsäck) > Player1.max_pungsäcksize:
+        Player1.alive = False
+        return Player1
+    else: 
+        return Player1 
 
-def take_damage(hp, damage):
-    hp -= damage
-    if hp <= 0:
-        alive = False
-        return hp
+def take_damage(Player1, damage):   
+    Player1.hp -= damage
+    if Player1 <= Player1.hp:
+        Player1.hp = Player1
+    return Player1
 
 
 def heal(hp, max_hp, amount):
     hp += amount
     if hp >= max_hp:
         hp = max_hp
-        return hp
+    return hp
 
 def main():
 
@@ -70,8 +73,8 @@ def main():
     Player_name = input("Nu får du skapa en karaktär. vad heter du?\n")
     
     while True:
-        role_choise = input("Nu får du välja vilken klass du ska vara resten av spelet, du kan välja mellan pungråtta 1, Lennart Bladh 2 och fritidschefen 3!(skriv siffran efter för att välja roll.)")
         
+        role_choise = input("Nu får du välja vilken klass du ska vara resten av spelet, du kan välja mellan pungråtta 1, Lennart Bladh 2 och fritidschefen 3!(skriv siffran efter för att välja roll.)")
         if role_choise == "1":
             Player1 = Player(Player_name, 0.7, 5, 8, "pungråtta")
             break
@@ -87,16 +90,10 @@ def main():
     print(f"Halloj {Player1.name}, du valde klassen {Player1.role}")
 
     
-    max_hp = Player1.hp
-    current_hp = max_hp
-    # amount = 1
-    damage = rand.randint(1, 4)
 
-    
-
-    alive = True
+ 
    
-    while alive:
+    while Player1.alive:
         print("Vad vill du göra?")
         val = input(""" 
                     1. Gå genom portal  2. Kolla stats
@@ -106,19 +103,29 @@ def main():
     
         
         if val == "1":
-            aj = take_damage(Player1.hp, damage)
-            print(aj)
+            damage = rand.randint(1, 4) 
+            Player1 = take_damage(Player1, damage)
+            
         elif val == "2":
-            rest = heal(Player1.hp, max_hp, 1)
-            print(rest)
-            pass
+            print(f"""
+                  
+
+
+                      Halloj, {Player1.name}, just nu har du {Player1.hp} liv och din styrka är {Player1.power}
+
+
+""")
+            
         elif val == "3":
-            pungsäckadd("leogiganorma")
-            print(Player1_pungsäck)
-            alive = pungsäcksizecontroll()
+            Player1 = pungsäckadd(Player1, "leogiganorma")
+            Player1 = pungsäcksizecontroll(Player1)
+            print(len(Player1.pungsäck))
+            print(Player1.pungsäck)
         
         elif val == "4":
-            print(len(Player1_pungsäck))
+            pass
+        elif val == "5":
+            print(heal(Player1, Player1.hp, 1))
         elif val == "q":
             break
         else:
