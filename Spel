@@ -1,5 +1,5 @@
 import random as rand
-
+import time as klockan_tickar
 
 
 # class Roller_stats():
@@ -52,16 +52,17 @@ def pungsäcksizecontroll(Player1):
 
 def take_damage(Player1, damage):   
     Player1.hp -= damage
-    if Player1 <= Player1.hp:
-        Player1.hp = Player1
+    if Player1.hp <= 0:
+        Player1.hp = 0
+        Player1.alive = False
     return Player1
 
 
-def heal(hp, max_hp, amount):
-    hp += amount
-    if hp >= max_hp:
-        hp = max_hp
-    return hp
+def heal(Player1):
+    Player1.hp += 1
+    if Player1.hp >= Player1.max_hp:
+        Player1.hp = Player1.max_hp
+    return Player1
 
 def main():
 
@@ -105,6 +106,7 @@ def main():
         if val == "1":
             damage = rand.randint(1, 4) 
             Player1 = take_damage(Player1, damage)
+            print(damage)
             
         elif val == "2":
             print(f"""
@@ -123,9 +125,10 @@ def main():
             print(Player1.pungsäck)
         
         elif val == "4":
-            pass
+            Player1 = heal(Player1)
+            print(f"Du chillade galet och fick 1 hp {Player1.hp}")    
         elif val == "5":
-            print(heal(Player1, Player1.hp, 1))
+            klockan_tickar.sleep(60)
         elif val == "q":
             break
         else:
