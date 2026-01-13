@@ -93,7 +93,7 @@ def randportal():
 def main():
 
     
-    print("Välkommen till äventyrsspelet. Du} kommer att navigera i en grotta, slåss" \
+    print("Välkommen till äventyrsspelet. Du kommer att navigera i en grotta, slåss" \
     " mot mantisar och samla skatter. \nMen se upp för satanisterna!")
     Player_name = input("Nu får du skapa en karaktär. vad heter du?\n")
     
@@ -161,6 +161,7 @@ def main():
             print("Du måste välja något av valen i menyn")
         
 main()
-print("""Tyvärr dog du. Better luck next time BUDDY 
+print("""
+      Tyvärr dog du. Better luck next time BUDDY 🥱🥱
       
 """)
