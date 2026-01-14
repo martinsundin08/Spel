@@ -27,6 +27,9 @@ class Mantisar():
         self.loot = []
         self.alive = True
 
+
+#    Arkivering av gammal eller viktig kod
+
 # class Roller_stats():
 #     def __init__(self, start_kraft, start_liv, start_pungsäck):
 #         self.kraft = start_kraft
@@ -45,3 +48,30 @@ class Mantisar():
 #         print(val * 10)
 #     except:
 #         print("sluta!")
+
+# def fight(Player1):
+#     mantis = Mantisar(rand.choice(mantis_namn), rand.randint(1,5), rand.randint(1,3),"dinmamma")
+#     while Player1.alive and mantis.alive:
+#         take_damage(mantis, Player1.power)
+#         print(f"Du slog {mantis.name} och gjorde {Player1.power} skada. {mantis.name} har nu {mantis.hp} hp kvar.")
+#         klockan_tickar.sleep(0)
+#         if mantis.alive:
+#             Player1 = take_damage(Player1, mantis.power)
+#             print(f"{mantis.name} slog dig och gjorde {mantis.power} skada. Du har nu {Player1.hp} hp kvar.")
+#             klockan_tickar.sleep(0)
+#         elif not mantis.alive: 
+#             print(f"Du har besegrat {mantis.name}!")
+#         elif not Player1.alive:
+#             print(f"Du har dött av {mantis.name}!")
+#         else:
+#             pass
+#     return Player1
+
+# def gain_xp(Player1, xp):
+#     Player1.xp += xp  
+#     print(f"Du fick {xp} xp! Du har nu {Player1.xp} xp!")
+#     if Player1.xp >= 10 * Player1.level:
+#         Player1.level += 1
+#         Player1.xp -= 10 * Player1.level
+#         print(f"Grattis, Du har nått nästa level. Du är nu level {Player1.level}!")
+#     return Player1

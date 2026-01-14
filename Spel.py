@@ -18,6 +18,16 @@ def pungsäcksizecontroll(Player1):
         return Player1
     else: 
         return Player1 
+    
+def gain_xp(Player1, xp):
+    Player1.xp += xp  
+    print(f"Du får {xp} xp efter fighten! Du har nu {Player1.xp} xp!")
+    if Player1.xp >= 10 * Player1.level:
+        Player1.level += 1
+        Player1.xp = 0
+        print(f"Grattis, Du har nått nästa level. Du är nu level {Player1.level}!")
+    return Player1
+
 
 def take_damage(Target, damage):   
     Target.hp -= damage
@@ -26,11 +36,15 @@ def take_damage(Target, damage):
         Target.alive = False
     return Target
 
+
+# kanske göra mantis.liv istället för total_damage, man får för mycket xp
 def fight(Player1):
     mantis = Mantisar(rand.choice(mantis_namn), rand.randint(1,5), rand.randint(1,3),"dinmamma")
+    total_damage = 0
     while Player1.alive and mantis.alive:
         take_damage(mantis, Player1.power)
         print(f"Du slog {mantis.name} och gjorde {Player1.power} skada. {mantis.name} har nu {mantis.hp} hp kvar.")
+        total_damage += Player1.power
         klockan_tickar.sleep(0)
         if mantis.alive:
             Player1 = take_damage(Player1, mantis.power)
@@ -38,6 +52,7 @@ def fight(Player1):
             klockan_tickar.sleep(0)
         elif not mantis.alive: 
             print(f"Du har besegrat {mantis.name}!")
+            gain_xp(Player1, total_damage)
         elif not Player1.alive:
             print(f"Du har dött av {mantis.name}!")
         else:
@@ -71,14 +86,7 @@ def randportal():
 
 # def lootroom():
 
-def gain_xp(Player1, xp):
-    Player1.xp += xp  
-    print(f"Du fick {xp} xp! Du har nu {Player1.xp} xp!")
-    if Player1.xp >= 10 * Player1.level:
-        Player1.level += 1
-        Player1.xp = 0
-        print(f"Grattis, Du har nått nästa level. Du är nu level {Player1.level}!")
-    return Player1
+
 
     
 
@@ -139,10 +147,10 @@ def main():
             print(f"Du har {len(Player1.pungsäck)}st saker i ditt inventory och de sakerna är:")
             len(Player1.pungsäck)
             for i in range (len(Player1.pungsäck)):
-                print(len(Player1.pungsäck))
+                
                 pungpop = Player1.pungsäck.pop(0)
-                print(pungpop.itemname)
-                print(i)
+                if pungpop.itemtype == "Weapond":
+                    print(f"{i}Detta är ditt {pungpop.itemname} som har en skade boost på {pungpop.powerboost}")
         
         elif val == "4":
             Player1 = heal(Player1)
