@@ -118,13 +118,13 @@ def playerlootremove(player):
     
     print("Nu måste du ta bort en sak i ditt inventory för du har för mycket skit!!!")
     val = int(input())
-    if val > len(player.pungsäck):
-        print("skriv någon av siffrorna brevid!!!")
-    elif val < 0:
-        print("skriv någon av siffrorna brevid!!!")
+    if val < 0:
+        print("Snälladu skriv en av siffrorna bredvid dina items!!")
+    elif val > len(player.pungsäck):
+        print("Snälladu skriv en av siffrorna bredvid dina items!!")    
     else:
         player.pungsäck.pop((val))
-
+    
     return player
  
 def playerlootcheck(player):
