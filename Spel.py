@@ -96,17 +96,17 @@ def heal(player):
     return player
 
 def playerlootadd(player,loot):
-    player.pungsäck.append(loot)
-    player.power += loot.powerboost
-    player.max_hp += loot.hpboost
-    if len(player.pungsäck) > player.max_pungsäcksize:
+    if len(player.pungsäck) >= player.max_pungsäcksize:
         playerlootremove(player)
     else:
         pass
+    player.pungsäck.append(loot)
+    player.power += loot.powerboost
+    player.max_hp += loot.hpboost
     return player
 
-#player loot kanske ska se till att 
 
+ 
 
 def playerlootremove(player):
     for i in range (len(player.pungsäck)):
@@ -115,28 +115,35 @@ def playerlootremove(player):
             print(f"({i}) {item.itemname}et som har en skade boost på {item.powerboost}")
         elif item.itemtype == "Armour":
             print (f"({i}) din {item.itemname}an som har en hp boost på {item.hpboost}")
-    
     print("Nu måste du ta bort en sak i ditt inventory för du har för mycket skit!!!")
-    val = int(input())
-    if val < 0:
-        print("Snälladu skriv en av siffrorna bredvid dina items!!")
-    elif val > len(player.pungsäck):
-        print("Snälladu skriv en av siffrorna bredvid dina items!!")    
-    else:
-        player.pungsäck.pop((val))
-    
+    while True:
+        val = input()
+        if val.isdigit() == False:
+            #isdigit hittas på formelbladet, så ingen ai här johannes🤗
+            print("Snälladu skriv en av siffrorna bredvid dina items!!")
+        elif int(val) < 0:
+            print("Snälladu skriv en av siffrorna bredvid dina items!!")
+        elif int(val) > len(player.pungsäck):
+            print("Snälladu skriv en av siffrorna bredvid dina items!!") 
+        else:
+            player.power -= (player.pungsäck[int(val)]).powerboost
+            player.hp -= (player.pungsäck[int(val)]).hpboost
+            player.pungsäck.pop(int(val))
+            break
+        
+
     return player
  
 def playerlootcheck(player):
-    print(f"Du har {len(player.pungsäck)}st saker i ditt inventory och de sakerna är:")
+    print(f"Du har {len(player.pungsäck)}st saker utav {player.max_pungsäcksize} i ditt inventory och de sakerna är:")
     len(player.pungsäck)
     for i in range (len(player.pungsäck)):
                 
         pungpop = player.pungsäck[i]
         if pungpop.itemtype == "Weapond":
-            print(f"{i} Detta är ditt {pungpop.itemname} som har en skade boost på {pungpop.powerboost}")
+            print(f"{i}  ditt {pungpop.itemname} som har en skade boost på {pungpop.powerboost}")
         elif pungpop.itemtype == "Armour":
-            print(f"{i}Detta är din {pungpop.itemname} som har en hp boost på {pungpop.hpboost}")
+            print(f"{i} din {pungpop.itemname} som har en hp boost på {pungpop.hpboost}")
     return player
                 
 def lootchest (player):
@@ -161,10 +168,8 @@ def main():
     print("Välkommen till äventyrsspelet👍😢😃😎. Du kommer att navigera i en grotta, slåss" \
     " mot mantisar och samla skatter. \nMen se upp för satanisterna!")
     player_name = input("Nu får du skapa en karaktär. vad heter du?\n")
-    
+    role_choise = input("Nu får du välja vilken klass du ska vara resten av spelet, du kan välja mellan pungråtta 1, Lennart Bladh 2 och fritidschefen 3!\n(skriv siffran efter för att välja roll.)\n")
     while True:
-        
-            role_choise = input("Nu får du välja vilken klass du ska vara resten av spelet, du kan välja mellan pungråtta 1, Lennart Bladh 2 och fritidschefen 3!(skriv siffran efter för att välja roll.)")
             if role_choise == "1":
                 Player1 = Player(player_name, 0.7, 5, 8, "pungråtta")
                 break
@@ -177,7 +182,7 @@ def main():
             else:
                 print("Esnella välj en siffra mellan 1 och 3")
 
-            print(f"Halloj {Player1.name}, du valde klassen {Player1.role}")
+    print(f"Halloj {Player1.name}, du valde klassen {Player1.role}")
 
         
     while Player1.alive:
@@ -201,10 +206,10 @@ def main():
 
 
                     Halloj, {Player1.name}.\n   Just nu har du {Player1.hp} liv och din styrka är {Player1.power}.\n    Du har {Player1.xp} xp och är i level {Player1.level}.
-
+                    
             """)
             
-        elif val == "3":
+        elif val == "3": 
             Player1 = playerlootcheck(Player1)
         elif val == "4":
             Player1 = heal(Player1)
@@ -216,7 +221,7 @@ def main():
             print(Player1.power)
             print(Player1.pungsäck)
         elif val == "6":
-            Player1 = gain_xp(Player1, 1)
+            Player1 = lootchest(Player1)
         elif val == "7":
             playerlootremove(Player1)
         elif val == "q":
@@ -225,6 +230,7 @@ def main():
             print("Du måste välja något av valen i menyn")
         if not Player1.alive:
             print("Tyvärr dog du. Better luck next time buddy")
+            break
         else:
             pass
         
