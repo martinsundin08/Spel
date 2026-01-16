@@ -168,8 +168,9 @@ def main():
     print("Välkommen till äventyrsspelet👍😢😃😎. Du kommer att navigera i en grotta, slåss" \
     " mot mantisar och samla skatter. \nMen se upp för satanisterna!")
     player_name = input("Nu får du skapa en karaktär. vad heter du?\n")
-    role_choise = input("Nu får du välja vilken klass du ska vara resten av spelet, du kan välja mellan pungråtta 1, Lennart Bladh 2 och fritidschefen 3!\n(skriv siffran efter för att välja roll.)\n")
+    print("Nu får du välja vilken klass du ska vara resten av spelet, du kan välja mellan pungråtta 1, Lennart Bladh 2 och fritidschefen 3!\n(skriv siffran efter för att välja roll.)\n")
     while True:
+            role_choise = input()
             if role_choise == "1":
                 Player1 = Player(player_name, 0.7, 5, 8, "pungråtta")
                 break
