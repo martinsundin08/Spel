@@ -88,3 +88,11 @@ class Mantisar():
 #         Playerlootadd(Player1,i)
 #         print(i)
 #     return Player1
+
+
+# def pungsäcksizecontroll(player):
+#     if len(player.pungsäck) > player.max_pungsäcksize:
+#         player.alive = False
+#         return player
+#     else: 
+#         return player 
