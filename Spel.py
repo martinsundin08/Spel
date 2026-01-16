@@ -4,8 +4,21 @@ from Funky import *
 from mantis_namn import *
 Sword = Loot("svärd" ,"Weapond" ,1.2 ,0 )
 Spear = Loot("spjut" ,"Weapond",1.4 ,0)
-chestplate = Loot("bröstplatta" ,"Armour",0 ,1.5)
+Chestplate = Loot("bröstplatta" ,"Armour",0 ,1.5)
+Tank = Loot("Pansarvagn","Weapond" ,12 ,12)
 
+class Player():
+    def __init__(self, name, power, max_hp, max_pungsäcksize, role):
+        self.name = name
+        self.power = power
+        self.max_hp = max_hp 
+        self.max_pungsäcksize = max_pungsäcksize
+        self.role = role
+        self.alive = True
+        self.pungsäck = []
+        self.hp = max_hp 
+        self.level = 0
+        self.xp = 0
 
 
 def pungsäckadd(Player1, a):
@@ -36,15 +49,12 @@ def take_damage(Target, damage):
         Target.alive = False
     return Target
 
-
-# kanske göra mantis.liv istället för total_damage, man får för mycket xp
 def fight(Player1):
     mantis = Mantisar(rand.choice(mantis_namn), rand.randint(1,5), rand.randint(1,3),"dinmamma")
-    total_damage = 0
+    total_damage = mantis.hp
     while Player1.alive and mantis.alive:
         take_damage(mantis, Player1.power)
         print(f"Du slog {mantis.name} och gjorde {Player1.power} skada. {mantis.name} har nu {mantis.hp} hp kvar.")
-        total_damage += Player1.power
         klockan_tickar.sleep(0)
         if mantis.alive:
             Player1 = take_damage(Player1, mantis.power)
@@ -66,19 +76,19 @@ def heal(Player1):
         Player1.hp = Player1.max_hp
     return Player1
 
-def Playerlootadd(Player1,loot):
-    Player1.pungsäck.append(loot)
-    Player1.power += loot.powerboost
-    Player1.max_hp += loot.hpboost
-    return Player1
+def Playerlootadd(Player,loot):
+    Player.pungsäck.append(loot)
+    Player.power += loot.powerboost
+    Player.max_hp += loot.hpboost
+    if len(Player.pungsäck) > Player.max_pungsäcksize:
+        playerlootremove(Player)
+    else:
+        pass
+    return Player
 
 #player loot kanske ska se till att 
 
-def Playerlootkanskekingfix(Player1):
-    for i in Player1.pungsäck:
-        Playerlootadd(Player1,i)
-        print(i)
-    return Player1
+
 
 def randportal():
     x = rand.randint(0,11)
@@ -87,13 +97,25 @@ def randportal():
 # def lootroom():
 
 
-
+def playerlootremove(player):
+    for i in range (len(player.pungsäck)):
+        item = player.pungsäck[i]
+        if item.itemtype == "Weapond":
+            print(f"({i}) Detta är ditt {item.itemname} som har en skade boost på {item.powerboost}")
+        elif item.itemtype == "Armour":
+            print (f"({i}) Detta är din {item.itemname} som har en hp boost på {item.hpboost}")
+    
+    print("Nu måste du ta bort en sak i ditt inventory för du har för mycket skit!!!")
+    val = int(input())
+    player.pungsäck.pop((val-1))
+ 
+                
     
 
 def main():
 
     
-    print("Välkommen till äventyrsspelet. Du kommer att navigera i en grotta, slåss" \
+    print("Välkommen till äventyrsspelet👍😢😃😎. Du kommer att navigera i en grotta, slåss" \
     " mot mantisar och samla skatter. \nMen se upp för satanisterna!")
     Player_name = input("Nu får du skapa en karaktär. vad heter du?\n")
     
@@ -148,9 +170,9 @@ def main():
             len(Player1.pungsäck)
             for i in range (len(Player1.pungsäck)):
                 
-                pungpop = Player1.pungsäck.pop(0)
+                pungpop = Player1.pungsäck[0]
                 if pungpop.itemtype == "Weapond":
-                    print(f"{i}Detta är ditt {pungpop.itemname} som har en skade boost på {pungpop.powerboost}")
+                    print(f"{i} Detta är ditt {pungpop.itemname} som har en skade boost på {pungpop.powerboost}")
         
         elif val == "4":
             Player1 = heal(Player1)
@@ -163,6 +185,8 @@ def main():
             print(Player1.pungsäck)
         elif val == "6":
             Player1 = gain_xp(Player1, 1)
+        elif val == "7":
+            playerlootremove(Player1)
         elif val == "q":
             break
         else:

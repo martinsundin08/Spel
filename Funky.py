@@ -6,18 +6,6 @@ class Loot():
         self.hpboost = hpboost
 
 
-class Player():
-    def __init__(self, name, power, max_hp, max_pungsäcksize, role):
-        self.name = name
-        self.power = power
-        self.max_hp = max_hp 
-        self.max_pungsäcksize = max_pungsäcksize
-        self.role = role
-        self.alive = True
-        self.pungsäck = []
-        self.hp = max_hp 
-        self.level = 0
-        self.xp = 0
 
 class Mantisar():
     def __init__(self, name, hp, power, loot):
@@ -74,4 +62,29 @@ class Mantisar():
 #         Player1.level += 1
 #         Player1.xp -= 10 * Player1.level
 #         print(f"Grattis, Du har nått nästa level. Du är nu level {Player1.level}!")
+#     return Player1
+
+   # if val == "1":
+    #     print(f"Du poppade nyss {player.itemname}")
+    #     player.pungsäck.pop(0)
+    # elif val == "2":
+    #     player.pungsäck.pop(1)
+    # elif val == "3":
+    #     player.pungsäck.pop(2)
+    # elif val == "4":
+    #     player.pungsäck.pop(3)
+    # elif val == "5":
+    #     player.pungsäck.pop(4)
+    # elif val == "6":
+    #     player.pungsäck.pop(5)
+    # elif val == "7":
+    #     player.pungsäck.pop(6)
+    # elif val == "8":
+    #     player.pungsäck.pop(7)
+    
+
+    # def Playerlootkanskekingfix(Player1):
+#     for i in Player1.pungsäck:
+#         Playerlootadd(Player1,i)
+#         print(i)
 #     return Player1
