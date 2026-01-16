@@ -31,7 +31,6 @@ class Player():
         self.level = 0
         self.xp = 0
 
-
 lootlist = []
 for i in range (33):
     lootlist.append(Spear)
@@ -60,7 +59,6 @@ def gain_xp(player, xp):
            print("Grattis, du klarade spelet!!")
     return player
 
-
 def take_damage(Target, damage):   
     Target.hp -= damage
     if Target.hp <= 0:
@@ -69,11 +67,11 @@ def take_damage(Target, damage):
     return Target
 
 def fight(player):
-    mantis = Mantisar(rand.choice(mantis_namn), rand.randint(1,5), rand.randint(1,3),"dinmamma")
+    mantis = Mantisar(rand.choice(mantis_namn), rand.randint(1,5), rand.randint(1,3),"")
     total_damage = mantis.hp
     while player.alive and mantis.alive:
         take_damage(mantis, player.power)
-        print(f"Du slog {mantis.name} och gjorde {player.power} skada. {mantis.name} har nu {mantis.hp} hp kvar.")
+        print(f"Du slog {mantis.name} och gjorde {player.power} skada. {mantis.name} har nu {mantis.hp:.1f} hp kvar.")
         klockan_tickar.sleep(0)
         if mantis.alive:
             player = take_damage(player, mantis.power)
@@ -91,8 +89,10 @@ def fight(player):
 
 def heal(player):
     player.hp += 1
+
     if player.hp >= player.max_hp:
         player.hp = player.max_hp
+
     return player
 
 def playerlootadd(player,loot):
@@ -135,15 +135,15 @@ def playerlootremove(player):
     return player
  
 def playerlootcheck(player):
-    print(f"Du har {len(player.pungsäck)}st saker utav {player.max_pungsäcksize} i ditt inventory och de sakerna är:")
-    len(player.pungsäck)
-    for i in range (len(player.pungsäck)):
-                
-        pungpop = player.pungsäck[i]
-        if pungpop.itemtype == "Weapond":
-            print(f"{i}  ditt {pungpop.itemname} som har en skade boost på {pungpop.powerboost}")
-        elif pungpop.itemtype == "Armour":
-            print(f"{i} din {pungpop.itemname} som har en hp boost på {pungpop.hpboost}")
+    print(f"Du har {len(player.pungsäck)} st saker utav {player.max_pungsäcksize} i ditt inventory och de sakerna är:")
+   
+    for i in range (len(player.pungsäck)):     
+        lootitem = player.pungsäck[i]
+        if lootitem.itemtype == "Weapond":
+            print(f"{i}  ditt {lootitem.itemname} som har en skade boost på {lootitem.powerboost}")
+        elif lootitem.itemtype == "Armour":
+            print(f"{i} din {lootitem.itemname} som har en hp boost på {lootitem.hpboost}")
+
     return player
                 
 def lootchest (player):
@@ -156,51 +156,51 @@ def randportal(player):
     x = rand.randint(0,11)
     if x <= 8:
         fight(player)
-    elif x > 8:
-        lootchest(player)
     else:
-        pass
+        lootchest(player)
+
     return player
 
-
-def main():
-
+def main(): 
     print("Välkommen till äventyrsspelet👍😢😃😎. Du kommer att navigera i en grotta, slåss" \
-    " mot mantisar och samla skatter. \nMen se upp för satanisterna!")
+        " mot mantisar och samla skatter. \nMen se upp för satanisterna!")
+    
     player_name = input("Nu får du skapa en karaktär. vad heter du?\n")
+    
     print("Nu får du välja vilken klass du ska vara resten av spelet, du kan välja mellan pungråtta 1, Lennart Bladh 2 och fritidschefen 3!\n(skriv siffran efter för att välja roll.)\n")
+    
     while True:
-            role_choise = input()
-            if role_choise == "1":
-                Player1 = Player(player_name, 0.7, 5, 8, "pungråtta")
-                break
-            elif role_choise == "2":
-                Player1 = Player(player_name, 1.4, 8, 5, "Lennart Bladh")
-                break
-            elif role_choise == "3":
-                Player1 = Player(player_name, 1, 5, 2, "Fritidschefen")
-                break
-            else:
-                print("Esnella välj en siffra mellan 1 och 3")
+        role_choice = input()
+
+        if role_choice == "1":
+            Player1 = Player(player_name, 0.7, 5, 8, "pungråtta")
+            break
+
+        elif role_choice == "2":
+            Player1 = Player(player_name, 1.4, 8, 5, "Lennart Bladh")
+            break
+
+        elif role_choice == "3":
+            Player1 = Player(player_name, 1, 5, 2, "Fritidschefen")
+            break
+
+        else:
+            print("Esnella välj en siffra mellan 1 och 3")
 
     print(f"Halloj {Player1.name}, du valde klassen {Player1.role}")
 
-        
     while Player1.alive:
- 
-   
-    
         print("Vad vill du göra?")
+
         val = input(""" 
                     1. Gå genom portal  2. Kolla stats
                     3. Öppna Pungsäck   4. vila
                     q. Avsluta spelet
                 """)
     
-        
         if val == "1":
             Player1 = randportal(Player1)
-            
+
         elif val == "2":
             print(f"""
                   
@@ -212,27 +212,21 @@ def main():
             
         elif val == "3": 
             Player1 = playerlootcheck(Player1)
+
         elif val == "4":
             Player1 = heal(Player1)
-            print(f"Du chillade galet och fick 1 hp {Player1.hp}")    
+            print(f"Du chillade galet och fick 1 hp {Player1.hp}") 
+
         elif val == "5":
-            
-            print(Player1.power)
-            Player1 = playerlootadd(Player1, Spear)
-            print(Player1.power)
-            print(Player1.pungsäck)
-        elif val == "6":
-            Player1 = lootchest(Player1)
-        elif val == "7":
-            playerlootremove(Player1)
+            pass
+
         elif val == "q":
-            break
+            exit(0)
         else:
             print("Du måste välja något av valen i menyn")
+
         if not Player1.alive:
             print("Tyvärr dog du. Better luck next time buddy")
-            break
-        else:
-            pass
-        
+            exit(0)
+
 main()
