@@ -1,9 +1,9 @@
-class Loot():
-    def __init__(self,itemname ,itemtype ,powerboost,hpboost ):
-        self.itemname = itemname
-        self.itemtype = itemtype
-        self.powerboost = powerboost
-        self.hpboost = hpboost
+# class Loot():
+#     def __init__(self,itemname ,itemtype ,powerboost,hpboost ):
+#         self.itemname = itemname
+#         self.itemtype = itemtype
+#         self.powerboost = powerboost
+#         self.hpboost = hpboost
 
 
 

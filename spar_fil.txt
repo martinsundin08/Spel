@@ -1,1 +1,1 @@
-leo-1.4-9.5-5-Lennart Bladh-True-[<Spel.Loot object at 0x000001BB48E1E240>]-8-1-2
+test-7.0-8.0-5-Lennart Bladh-True-[<Spel.Loot object at 0x00000210ACB0FFB0>, <Spel.Loot object at 0x00000210ACB0FFB0>]-7.0-1-2

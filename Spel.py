@@ -1,9 +1,11 @@
 import random as rand
 import time as klockan_tickar
+import json as json
 from Funky import *
 from mantis_namn import *
 from lootlist import *
 from sparfil import *
+
 
 class Loot():
     def __init__(self,itemname ,itemtype ,powerboost,hpboost ):
@@ -12,12 +14,45 @@ class Loot():
         self.powerboost = powerboost
         self.hpboost = hpboost
 
-alive = True
+    def to_dict(self):
+        return {
+          "itemname": self.itemname,
+          "itemtype": self.itemtype,
+          "powerboost": self.powerboost,
+          "HPboost": self.hpboost
+        }
+
+    @classmethod
+    def from_dict(cls, d):
+        return cls(
+            d["itemname"],
+            d["itemtype"],
+            d.get("powerboost", 0),
+            d.get("hpboost", d.get("HPboost", 0))
+        )
+
 
 Sword = Loot("svärd" ,"Weapond" ,1.2 ,0 )
 Spear = Loot("spjut" ,"Weapond",1.4 ,0)
 Chestplate = Loot("bröstplatta" ,"Armour",0 ,1.5)
 Tank = Loot("Pansarvagn","Weapond" ,12 ,12)
+lootlist = []
+
+
+for i in range (33):
+    lootlist.append(Spear)
+
+for i in range (33):
+    lootlist.append(Sword)
+for i in range (33):
+    lootlist.append(Chestplate)
+lootlist.append(Tank)
+
+
+print(f"{Tank.itemname},{Tank}")
+print(f"{Spear.itemname},{Spear}")
+print(f"{Chestplate.itemname},{Chestplate}")
+print(f"{Sword.itemname},{Sword}")
 
 class Player():
     def __init__(self, name, power, max_hp, max_pungsäcksize, role):
@@ -31,7 +66,46 @@ class Player():
         self.hp = max_hp 
         self.level = 0
         self.xp = 0
+    
+    def to_dict(self):
+        sackItems = []
+        for i in range(len(self.pungsäck)):
+            sackItems.append(self.pungsäck[i].to_dict())
 
+        return {
+          "name": self.name ,
+          "power": self.power ,
+          "max_hp": self.max_hp ,
+          "max_pungsäcksize": self.max_pungsäcksize,
+          "role": self.role,
+          "alive": self.alive,
+          "pungsäck": sackItems,
+          "hp": self.hp,
+          "level": self.level,
+          "xp": self.xp
+     }
+
+    @classmethod
+    def from_dict(cls, d):
+        p = cls(
+            d["name"],
+            d["power"],
+            d["max_hp"],
+            d["max_pungsäcksize"],
+            d["role"],
+        )
+        p.alive = d.get("alive", True)
+        p.hp = d.get("hp", p.max_hp)
+        p.level = d.get("level", 0)
+        p.xp = d.get("xp", 0)
+
+        p.pungsäck = [Loot.from_dict(item) for item in d.get("pungsäck", [])]
+
+        if p.hp > p.max_hp:
+            p.hp = p.max_hp
+
+        return p
+    
 lootlist = []
 for i in range (33):
     lootlist.append(Spear)
@@ -57,7 +131,7 @@ def gain_xp(player, xp):
         print(f"Grattis, Du har nått nästa level. Du är nu level {player.level}!")
         if player.level == 5: 
            print("Grattis, du klarade spelet!!")
-           quit(0)
+           exit(0)
     return player
 
 def take_damage(Target, damage):   
@@ -83,6 +157,8 @@ def fight(player):
             gain_xp(player, total_damage)
         elif not player.alive:
             print(f"Du har dött av {mantis.name}!")
+            print("Better luck next time BUDDY!!")
+            exit(0)
         else:
             pass
     return player
@@ -140,7 +216,7 @@ def playerlootcheck(player):
    
     for i in range (len(player.pungsäck)):     
         lootitem = player.pungsäck[i]
-        if lootitem.itemtype == "Weapond":
+        if lootitem. itemtype == "Weapond":
             print(f"{i}  ditt {lootitem.itemname} som har en skade boost på {lootitem.powerboost}")
         elif lootitem.itemtype == "Armour":
             print(f"{i} din {lootitem.itemname} som har en hp boost på {lootitem.hpboost}")
@@ -190,45 +266,50 @@ def main():
 
     print(f"Halloj {Player1.name}, du valde klassen {Player1.role}")
 
+
     while Player1.alive:
-        print("Vad vill du göra?")
+            print("Vad vill du göra?")
 
-        val = input(""" 
-                    1. Gå genom portal  2. Kolla stats
-                    3. Öppna Pungsäck   4. vila
-                    q. Avsluta spelet
-                """)
-    
-        if val == "1":
-            Player1 = randportal(Player1)
-
-        elif val == "2":
-            print(f"""
-                  
-
-
-                    Halloj, {Player1.name}.\n   Just nu har du {Player1.hp} liv och din styrka är {Player1.power}.\n    Du har {Player1.xp} xp och är i level {Player1.level}.
-                    
-            """)
-            
-        elif val == "3": 
-            Player1 = playerlootcheck(Player1)
-
-        elif val == "4":
-            Player1 = heal(Player1)
-            print(f"Du chillade galet och fick 1 hp {Player1.hp}") 
-
-        elif val == "5":
-            save_file(Player1)
+            val = input(""" 
+                        1. Gå genom portal  2. Kolla stats
+                        3. Öppna Pungsäck   4. vila
+                        q. Avsluta spelet
+                    """)
         
-        elif val == "6":
-            Player1  = save_file_open(Player1)
+            if val == "1":
+                Player1 = randportal(Player1)
 
-        elif val == "q":
-            exit(0)
-        else:
-            print("Du måste välja något av valen i menyn")
-        if Player1.alive == False:
-            print("Better luck next time buddy")
-            exit(0)
-main()
+            elif val == "2":
+                print(f"""
+                    
+
+
+                        Halloj, {Player1.name}.\n   Just nu har du {Player1.hp} liv och din styrka är {Player1.power}.\n    Du har {Player1.xp} xp och är i level {Player1.level}.
+                        
+                """)
+                
+            elif val == "3":
+                print(Player1.pungsäck) 
+                Player1 = playerlootcheck(Player1)
+
+            elif val == "4":
+                Player1 = heal(Player1)
+                print(f"Du chillade galet och fick 1 hp {Player1.hp}") 
+
+            elif val == "5":
+                save_test(Player1)
+            elif val == "6":
+                Player1 = load_save_file(Player)
+            elif val == "7":
+                Player1 = playerlootadd(Player1,Spear)
+            elif val == "8":
+                pass
+
+            elif val == "q":
+                exit(0)
+            else:
+                print("Du måste välja något av valen i menyn")
+            
+
+if __name__ == "__main__":
+    main()
