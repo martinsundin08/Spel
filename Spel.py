@@ -3,6 +3,7 @@ import time as klockan_tickar
 from Funky import *
 from mantis_namn import *
 from lootlist import *
+from sparfil import *
 
 class Loot():
     def __init__(self,itemname ,itemtype ,powerboost,hpboost ):
@@ -54,9 +55,9 @@ def gain_xp(player, xp):
         player.level += 1
         player.xp = 0
         print(f"Grattis, Du har nått nästa level. Du är nu level {player.level}!")
-        if player.level == 5:
-           player.alive = False 
+        if player.level == 5: 
            print("Grattis, du klarade spelet!!")
+           quit(0)
     return player
 
 def take_damage(Target, damage):   
@@ -127,7 +128,7 @@ def playerlootremove(player):
             print("Snälladu skriv en av siffrorna bredvid dina items!!") 
         else:
             player.power -= (player.pungsäck[int(val)]).powerboost
-            player.hp -= (player.pungsäck[int(val)]).hpboost
+            player.max_hp -= (player.pungsäck[int(val)]).hpboost
             player.pungsäck.pop(int(val))
             break
         
@@ -148,8 +149,8 @@ def playerlootcheck(player):
                 
 def lootchest (player):
     x = rand.choice(lootlist)
-    playerlootadd(player,x)
     print(f"Wow, du hittade en skattkista och i skattkistan låg en/ett {x.itemname}!!")
+    playerlootadd(player,x)
     return player
 
 def randportal(player):
@@ -218,15 +219,16 @@ def main():
             print(f"Du chillade galet och fick 1 hp {Player1.hp}") 
 
         elif val == "5":
-            pass
+            save_file(Player1)
+        
+        elif val == "6":
+            Player1  = save_file_open(Player1)
 
         elif val == "q":
             exit(0)
         else:
             print("Du måste välja något av valen i menyn")
-
-        if not Player1.alive:
-            print("Tyvärr dog du. Better luck next time buddy")
+        if Player1.alive == False:
+            print("Better luck next time buddy")
             exit(0)
-
 main()

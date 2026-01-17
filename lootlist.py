@@ -1,6 +1,6 @@
 from Spel import *
 from Funky import *
-from Spel import Spear
+
 
 lootlist = []
 for i in range (33):
