@@ -18,6 +18,10 @@ class Mantisar():
 
 #    Arkivering av gammal eller viktig kod
 
+# def pungsäckadd(player, a):
+#     player.inventory.append(a)
+#     return player
+
 # class Roller_stats():
 #     def __init__(self, start_kraft, start_liv, start_pungsäck):
 #         self.kraft = start_kraft

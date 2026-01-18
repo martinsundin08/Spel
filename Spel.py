@@ -48,38 +48,32 @@ for i in range (33):
     lootlist.append(Chestplate)
 lootlist.append(Tank)
 
-
-print(f"{Tank.itemname},{Tank}")
-print(f"{Spear.itemname},{Spear}")
-print(f"{Chestplate.itemname},{Chestplate}")
-print(f"{Sword.itemname},{Sword}")
-
 class Player():
-    def __init__(self, name, power, max_hp, max_pungsäcksize, role):
+    def __init__(self, name, power, max_hp, max_inventory, role):
         self.name = name
         self.power = power
         self.max_hp = max_hp 
-        self.max_pungsäcksize = max_pungsäcksize
+        self.max_inventory = max_inventory
         self.role = role
         self.alive = True
-        self.pungsäck = []
+        self.inventory = []
         self.hp = max_hp 
         self.level = 0
         self.xp = 0
     
     def to_dict(self):
         sackItems = []
-        for i in range(len(self.pungsäck)):
-            sackItems.append(self.pungsäck[i].to_dict())
+        for i in range(len(self.inventory)):
+            sackItems.append(self.inventory[i].to_dict())
 
         return {
           "name": self.name ,
           "power": self.power ,
           "max_hp": self.max_hp ,
-          "max_pungsäcksize": self.max_pungsäcksize,
+          "max_inventory": self.max_inventory,
           "role": self.role,
           "alive": self.alive,
-          "pungsäck": sackItems,
+          "inventory": sackItems,
           "hp": self.hp,
           "level": self.level,
           "xp": self.xp
@@ -91,7 +85,7 @@ class Player():
             d["name"],
             d["power"],
             d["max_hp"],
-            d["max_pungsäcksize"],
+            d["max_inventory"],
             d["role"],
         )
         p.alive = d.get("alive", True)
@@ -99,7 +93,7 @@ class Player():
         p.level = d.get("level", 0)
         p.xp = d.get("xp", 0)
 
-        p.pungsäck = [Loot.from_dict(item) for item in d.get("pungsäck", [])]
+        p.inventory = [Loot.from_dict(item) for item in d.get("inventory", [])]
 
         if p.hp > p.max_hp:
             p.hp = p.max_hp
@@ -115,12 +109,6 @@ for i in range (33):
 for i in range (33):
     lootlist.append(Chestplate)
 lootlist.append(Tank)
-
-def pungsäckadd(player, a):
-    player.pungsäck.append(a)
-    return player
-
-
     
 def gain_xp(player, xp):
     player.xp += xp  
@@ -173,11 +161,11 @@ def heal(player):
     return player
 
 def playerlootadd(player,loot):
-    if len(player.pungsäck) >= player.max_pungsäcksize:
+    if len(player.inventory) >= player.max_inventory:
         playerlootremove(player)
     else:
         pass
-    player.pungsäck.append(loot)
+    player.inventory.append(loot)
     player.power += loot.powerboost
     player.max_hp += loot.hpboost
     return player
@@ -186,8 +174,8 @@ def playerlootadd(player,loot):
  
 
 def playerlootremove(player):
-    for i in range (len(player.pungsäck)):
-        item = player.pungsäck[i]
+    for i in range (len(player.inventory)):
+        item = player.inventory[i]
         if item.itemtype == "Weapond":
             print(f"({i}) {item.itemname}et som har en skade boost på {item.powerboost}")
         elif item.itemtype == "Armour":
@@ -200,26 +188,26 @@ def playerlootremove(player):
             print("Snälladu skriv en av siffrorna bredvid dina items!!")
         elif int(val) < 0:
             print("Snälladu skriv en av siffrorna bredvid dina items!!")
-        elif int(val) > len(player.pungsäck):
+        elif int(val) > len(player.inventory):
             print("Snälladu skriv en av siffrorna bredvid dina items!!") 
         else:
-            player.power -= (player.pungsäck[int(val)]).powerboost
-            player.max_hp -= (player.pungsäck[int(val)]).hpboost
-            player.pungsäck.pop(int(val))
+            player.power -= (player.inventory[int(val)]).powerboost
+            player.max_hp -= (player.inventory[int(val)]).hpboost
+            player.inventory.pop(int(val))
             break
         
 
     return player
  
 def playerlootcheck(player):
-    print(f"Du har {len(player.pungsäck)} st saker utav {player.max_pungsäcksize} i ditt inventory och de sakerna är:")
+    print(f"Du har {len(player.inventory)} st saker utav {player.max_inventory} i ditt inventory och de sakerna är:")
    
-    for i in range (len(player.pungsäck)):     
-        lootitem = player.pungsäck[i]
+    for i in range (len(player.inventory)):     
+        lootitem = player.inventory[i]
         if lootitem. itemtype == "Weapond":
             print(f"{i}  ditt {lootitem.itemname} som har en skade boost på {lootitem.powerboost}")
         elif lootitem.itemtype == "Armour":
-            print(f"{i} din {lootitem.itemname} som har en hp boost på {lootitem.hpboost}")
+            print(f"{i}  din {lootitem.itemname} som har en hp boost på {lootitem.hpboost}")
 
     return player
                 
@@ -238,7 +226,7 @@ def randportal(player):
 
     return player
 
-def main(): 
+def new_game():
     print("Välkommen till äventyrsspelet👍😢😃😎. Du kommer att navigera i en grotta, slåss" \
         " mot mantisar och samla skatter. \nMen se upp för satanisterna!")
     
@@ -265,15 +253,40 @@ def main():
             print("Esnella välj en siffra mellan 1 och 3")
 
     print(f"Halloj {Player1.name}, du valde klassen {Player1.role}")
+    return Player1
+
+def load_game(player):
+    x = load_save_file(player)
+    return x
+
+def game_start():
+    print("Hej och välkommen till äventyrsspelet!!!  \n\nOm du är ny till detta spel så klicka (1) \n\nOm du har en sparfil klicka (2)")
+    while True:
+        Player1 = Player("player_name", 1, 5, 2, "Fritidschefen")
+        game_choice = input()
+        if game_choice == "1":
+            x = new_game()
+            break
+        elif game_choice == "2":
+            x = load_game(Player1)
+            print(f"Välkommen tillbaka {x.name}")
+            break
+        else:
+            print("snälla skriv en av siffrorna som står ovan🥺🥺🥺")
+    return x
+
+def main(): 
+    Player1 = game_start()
+    
 
 
     while Player1.alive:
-            print("Vad vill du göra?")
+            print("\nVad vill du göra?")
 
             val = input(""" 
                         1. Gå genom portal  2. Kolla stats
-                        3. Öppna Pungsäck   4. vila
-                        q. Avsluta spelet
+                        3. Öppna Pungsäcken 4. vila
+                        5. Spara spelet     q. Avsluta spelet
                     """)
         
             if val == "1":
@@ -284,12 +297,12 @@ def main():
                     
 
 
-                        Halloj, {Player1.name}.\n   Just nu har du {Player1.hp} liv och din styrka är {Player1.power}.\n    Du har {Player1.xp} xp och är i level {Player1.level}.
+                        Halloj {Player1.name}.\n   Just nu har du {Player1.hp} liv och din styrka är {Player1.power}.\n   Du har {Player1.xp} xp och är i level {Player1.level}.
                         
                 """)
                 
             elif val == "3":
-                print(Player1.pungsäck) 
+                print(Player1.inventory) 
                 Player1 = playerlootcheck(Player1)
 
             elif val == "4":

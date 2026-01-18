@@ -1,11 +1,11 @@
 {
    "name": "kleo",
-   "power": 5.6,
-   "max_hp": 8,
-   "max_pungs\u00e4cksize": 5,
+   "power": 7.0,
+   "max_hp": 9.5,
+   "max_inventory": 5,
    "role": "Lennart Bladh",
    "alive": true,
-   "pungs\u00e4ck": [
+   "inventory": [
       {
          "itemname": "spjut",
          "itemtype": "Weapond",
@@ -17,6 +17,18 @@
          "itemtype": "Weapond",
          "powerboost": 1.4,
          "HPboost": 0
+      },
+      {
+         "itemname": "spjut",
+         "itemtype": "Weapond",
+         "powerboost": 1.4,
+         "HPboost": 0
+      },
+      {
+         "itemname": "br\u00f6stplatta",
+         "itemtype": "Armour",
+         "powerboost": 0,
+         "HPboost": 1.5
       },
       {
          "itemname": "spjut",
@@ -26,6 +38,6 @@
       }
    ],
    "hp": 8,
-   "level": 0,
+   "level": 1,
    "xp": 0
 }
