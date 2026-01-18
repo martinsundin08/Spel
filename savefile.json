@@ -1,29 +1,11 @@
 {
-   "name": "kleo",
-   "power": 7.0,
-   "max_hp": 9.5,
+   "name": "ballefjongberga",
+   "power": 4.0,
+   "max_hp": 12.5,
    "max_inventory": 5,
    "role": "Lennart Bladh",
    "alive": true,
    "inventory": [
-      {
-         "itemname": "spjut",
-         "itemtype": "Weapond",
-         "powerboost": 1.4,
-         "HPboost": 0
-      },
-      {
-         "itemname": "spjut",
-         "itemtype": "Weapond",
-         "powerboost": 1.4,
-         "HPboost": 0
-      },
-      {
-         "itemname": "spjut",
-         "itemtype": "Weapond",
-         "powerboost": 1.4,
-         "HPboost": 0
-      },
       {
          "itemname": "br\u00f6stplatta",
          "itemtype": "Armour",
@@ -35,9 +17,27 @@
          "itemtype": "Weapond",
          "powerboost": 1.4,
          "HPboost": 0
+      },
+      {
+         "itemname": "sv\u00e4rd",
+         "itemtype": "Weapond",
+         "powerboost": 1.2,
+         "HPboost": 0
+      },
+      {
+         "itemname": "br\u00f6stplatta",
+         "itemtype": "Armour",
+         "powerboost": 0,
+         "HPboost": 1.5
+      },
+      {
+         "itemname": "br\u00f6stplatta",
+         "itemtype": "Armour",
+         "powerboost": 0,
+         "HPboost": 1.5
       }
    ],
-   "hp": 8,
-   "level": 1,
-   "xp": 0
+   "hp": 5.5,
+   "level": 3,
+   "xp": 23
 }
