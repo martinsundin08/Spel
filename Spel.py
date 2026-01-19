@@ -144,10 +144,12 @@ def fight(player):                                                              
 
 
 def heal(player):       # vila för att få 1 hp
-    player.hp += 1
     if player.hp >= player.max_hp:         # kan inte få mer hp än max_hp
         player.hp = player.max_hp   # kan inte få mer hp än max_hp
         print("Du har redan fullt hp!")
+    else:
+        print(f"Du chillade galet och fick 1 hp {player.hp}")
+        player.hp += 1
     return player
 
 
@@ -314,7 +316,7 @@ def main():
 
             elif val == "4":
                 Player1 = heal(Player1)
-                print(f"Du chillade galet och fick 1 hp {Player1.hp}") 
+                 
 
             elif val == "5":
                 save_game(Player1)
