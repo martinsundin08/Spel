@@ -1,9 +1,7 @@
 import random as rand
 import time as klockan_tickar
 import json as json
-from Funky import *
 from mantis_namn import *
-from lootlist import *
 from sparfil import *
 
 class Loot(): #detta är en klass som besriver vilka atribut looten ska ha
@@ -13,7 +11,7 @@ class Loot(): #detta är en klass som besriver vilka atribut looten ska ha
         self.powerboost = powerboost
         self.hpboost = hpboost
 
-    def to_dict(self): #här to dict;ar vi, så vi göt om informationen i klassen till datatypen dictionary
+    def to_dict(self): #här to dict;ar vi, så vi gör om informationen i klassen till datatypen dictionary
         return {
           "itemname": self.itemname,
           "itemtype": self.itemtype,
@@ -22,30 +20,13 @@ class Loot(): #detta är en klass som besriver vilka atribut looten ska ha
         }
 
     @classmethod #här from dictar vi looten, asså vi går från datatypen dictionary till class
-    def from_dict(cls, loot):
+    def from_dict(cls, loot:dict):
         return cls(
             loot["itemname"],
             loot["itemtype"],
             loot.get("powerboost", 0),
             loot.get("hpboost", loot.get("HPboost", 0))
         )
-
-#under så deklarerar vi olika variabler i klassen loot, och sätter deras attribut
-Sword = Loot("svärd" ,"Weapond" ,1.2 ,0 )
-Spear = Loot("spjut" ,"Weapond",1.4 ,0)
-Chestplate = Loot("bröstplatta" ,"Armour",0 ,1.5)
-Tank = Loot("Pansarvagn","Weapond" ,12 ,12)
-lootlist = []#deklarerar lootlisten
-
-# här under skapar vi en loot lista som skattkistorna drar ifrån, vi lägger till det som ska vara vanligare fler gånger och sen lägger vi till tanken endast en gång för den är op
-for i in range (33):
-    lootlist.append(Spear)
-
-for i in range (33):
-    lootlist.append(Sword)
-for i in range (33):
-    lootlist.append(Chestplate)
-lootlist.append(Tank)
 
 class Player(): # här är klassen player och i den förvarar vi allt som rör spelare
     def __init__(self, name, power, max_hp, max_inventory, role):
@@ -77,9 +58,10 @@ class Player(): # här är klassen player och i den förvarar vi allt som rör s
           "level": self.level,
           "xp": self.xp
      }
-
+    
+    
     @classmethod
-    def from_dict(cls, player): #här from dictar vi spelaren, asså vi går från datatypen dictionary till class
+    def from_dict(cls, player:dict): #här from dictar vi spelaren, asså vi går från datatypen dictionary till class
         playerreturn = cls(
             player["name"],
             player["power"],
@@ -99,6 +81,31 @@ class Player(): # här är klassen player och i den förvarar vi allt som rör s
 
         return playerreturn
     
+class Mantisar():
+    def __init__(self, name, hp, power, loot):
+        self.name = name
+        self.hp = hp
+        self.power = power
+        self.loot = []
+        self.alive = True
+ 
+#under så deklarerar vi olika variabler i klassen loot, och sätter deras attribut
+Sword = Loot("svärd" ,"Weapond" ,1.2 ,0 )
+Spear = Loot("spjut" ,"Weapond",1.4 ,0)
+Chestplate = Loot("bröstplatta" ,"Armour",0 ,1.5)
+Tank = Loot("Pansarvagn","Weapond" ,12 ,12)
+lootlist = []#deklarerar lootlisten
+
+# här under skapar vi en loot lista som skattkistorna drar ifrån, vi lägger till det som ska vara vanligare fler gånger och sen lägger vi till tanken endast en gång för den är op
+for i in range (33):
+    lootlist.append(Spear)
+
+for i in range (33):
+    lootlist.append(Sword)
+for i in range (33):
+    lootlist.append(Chestplate)
+lootlist.append(Tank)
+
 def gain_xp(player, xp):    # ger xp och levlar upp spelaren efter ett visst antal xp, efter fighten.
     player.xp += xp                   
     print(f"Du får {xp} xp efter fighten! Du har nu {player.xp} xp!")
@@ -146,7 +153,7 @@ def heal(player):       # vila för att få 1 hp
         player.hp = player.max_hp   # kan inte få mer hp än max_hp
         print("Du har redan fullt hp!")
     else:
-        print(f"Du chillade galet och fick 1 hp {player.hp}")
+        print(f"Du chillade galet och fick 1 hp nu har du {player.hp}hp, utav {player.max_hp}hp")
         player.hp += 1
     return player
 
@@ -217,9 +224,9 @@ def playerlootcheck(player): #denna används när spelaren vill kolla vad som fi
         for i in range (len(player.inventory)):  #här loopar den igenom allt i inventoryt och skriver yt det, texten varierar lite beroende om det är av loottypen vapen eller rustning och det kollas med en if sats   
             lootitem = player.inventory[i]
             if lootitem. itemtype == "Weapond":
-                print(f"{i}  ditt {lootitem.itemname} som har en skade boost på {lootitem.powerboost}")
+                print(f"ditt {lootitem.itemname} som har en skade boost på {lootitem.powerboost}")
             elif lootitem.itemtype == "Armour":
-                print(f"{i}  din {lootitem.itemname} som har en hp boost på {lootitem.hpboost}")
+                print(f"din {lootitem.itemname} som har en hp boost på {lootitem.hpboost}")
 
     return player
 
@@ -244,7 +251,7 @@ def randportal(player):       # slumpmässigt val mellan skattkista eller fighta
     x = rand.randint(0,12)
     if x <= 8:    # större chans att man får fightas mot mantis.
         fight(player)        
-    elif x < 10:
+    elif x <= 10:
         player = lootchest(player) # kallar på lootchest
     else:
         player = trap(player) # kallar på trapen

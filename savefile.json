@@ -1,43 +1,19 @@
 {
-   "name": "ballefjongberga",
-   "power": 4.0,
-   "max_hp": 12.5,
-   "max_inventory": 5,
-   "role": "Lennart Bladh",
+   "name": "Jerre",
+   "power": 2.4,
+   "max_hp": 5,
+   "max_inventory": 2,
+   "role": "Fritidschefen",
    "alive": true,
    "inventory": [
-      {
-         "itemname": "br\u00f6stplatta",
-         "itemtype": "Armour",
-         "powerboost": 0,
-         "HPboost": 1.5
-      },
       {
          "itemname": "spjut",
          "itemtype": "Weapond",
          "powerboost": 1.4,
          "HPboost": 0
-      },
-      {
-         "itemname": "sv\u00e4rd",
-         "itemtype": "Weapond",
-         "powerboost": 1.2,
-         "HPboost": 0
-      },
-      {
-         "itemname": "br\u00f6stplatta",
-         "itemtype": "Armour",
-         "powerboost": 0,
-         "HPboost": 1.5
-      },
-      {
-         "itemname": "br\u00f6stplatta",
-         "itemtype": "Armour",
-         "powerboost": 0,
-         "HPboost": 1.5
       }
    ],
-   "hp": 5.5,
-   "level": 3,
-   "xp": 23
+   "hp": 3,
+   "level": 1,
+   "xp": 6
 }

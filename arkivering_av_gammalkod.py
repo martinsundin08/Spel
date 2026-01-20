@@ -7,13 +7,6 @@
 
 
 
-class Mantisar():
-    def __init__(self, name, hp, power, loot):
-        self.name = name
-        self.hp = hp
-        self.power = power
-        self.loot = []
-        self.alive = True
 
 
 #    Arkivering av gammal eller viktig kod
