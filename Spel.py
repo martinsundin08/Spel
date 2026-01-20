@@ -6,7 +6,6 @@ from mantis_namn import *
 from lootlist import *
 from sparfil import *
 
-
 class Loot(): #detta är en klass som besriver vilka atribut looten ska ha
     def __init__(self,itemname ,itemtype ,powerboost,hpboost ):
         self.itemname = itemname
@@ -23,12 +22,12 @@ class Loot(): #detta är en klass som besriver vilka atribut looten ska ha
         }
 
     @classmethod #här from dictar vi looten, asså vi går från datatypen dictionary till class
-    def from_dict(cls, d):
+    def from_dict(cls, loot):
         return cls(
-            d["itemname"],
-            d["itemtype"],
-            d.get("powerboost", 0),
-            d.get("hpboost", d.get("HPboost", 0))
+            loot["itemname"],
+            loot["itemtype"],
+            loot.get("powerboost", 0),
+            loot.get("hpboost", loot.get("HPboost", 0))
         )
 
 #under så deklarerar vi olika variabler i klassen loot, och sätter deras attribut
@@ -80,25 +79,25 @@ class Player(): # här är klassen player och i den förvarar vi allt som rör s
      }
 
     @classmethod
-    def from_dict(cls, d): #här from dictar vi spelaren, asså vi går från datatypen dictionary till class
-        p = cls(
-            d["name"],
-            d["power"],
-            d["max_hp"],
-            d["max_inventory"],
-            d["role"],
+    def from_dict(cls, player): #här from dictar vi spelaren, asså vi går från datatypen dictionary till class
+        playerreturn = cls(
+            player["name"],
+            player["power"],
+            player["max_hp"],
+            player["max_inventory"],
+            player["role"],
         )
-        p.alive = d.get("alive", True)
-        p.hp = d.get("hp", p.max_hp)
-        p.level = d.get("level", 0)
-        p.xp = d.get("xp", 0)
+        playerreturn.alive = player.get("alive", True)
+        playerreturn.hp = player.get("hp", playerreturn.max_hp)
+        playerreturn.level = player.get("level", 0)
+        playerreturn.xp = player.get("xp", 0)
 
-        p.inventory = [Loot.from_dict(item) for item in d.get("inventory", [])]
+        playerreturn.inventory = [Loot.from_dict(item) for item in player.get("inventory", [])]
 
-        if p.hp > p.max_hp:
-            p.hp = p.max_hp
+        if playerreturn.hp > playerreturn.max_hp:
+            playerreturn.hp = playerreturn.max_hp
 
-        return p
+        return playerreturn
     
 def gain_xp(player, xp):    # ger xp och levlar upp spelaren efter ett visst antal xp, efter fighten.
     player.xp += xp                   
@@ -125,11 +124,11 @@ def fight(player):                                                              
     while player.alive and mantis.alive:      
         mantis = take_damage(mantis, player.power)
         print(f"Du slog {mantis.name} och gjorde {player.power} skada. {mantis.name} har nu {mantis.hp:.1f} hp kvar.")
-        klockan_tickar.sleep(2)    # kul med lite paus!            
+        klockan_tickar.sleep(0)    # kul med lite paus!            
         if mantis.alive:
             player = take_damage(player, mantis.power)
-            print(f"{mantis.name} slog dig och gjorde {mantis.power} skada. Du har nu {player.hp} hp kvar.")
-            klockan_tickar.sleep(2)
+            print(f"{mantis.name} slog dig och gjorde {mantis.power} skada. Du har nu {player.hp:.1f} hp kvar.")
+            klockan_tickar.sleep(0)
         elif not mantis.alive: 
             print(f"Du har besegrat {mantis.name}!")
             gain_xp(player, total_damage)    
@@ -142,7 +141,6 @@ def fight(player):                                                              
         pass
     return player
 
-
 def heal(player):       # vila för att få 1 hp
     player.hp += 1
     if player.hp >= player.max_hp:         # kan inte få mer hp än max_hp
@@ -150,22 +148,25 @@ def heal(player):       # vila för att få 1 hp
         print("Du har redan fullt hp!")
     return player
 
-
+def playerlootremove(player, pos):
+    print(pos)  
+    player.power -= (player.inventory[pos]).powerboost# här tar vi bort power boosten looten har gett oss så inte boosten finns kvar när spelaren inte innehaver saken
+    player.max_hp -= (player.inventory[pos]).hpboost#samma som den innan fast med hg
+    player.inventory.pop(pos)   
+    return player
+      
 def playerlootadd(player,loot): 
     player.inventory.append(loot) #lägger till loot i spelarens inventory
     player.power += loot.powerboost #lägger till powerbosten från looten till spelaren
     player.max_hp += loot.hpboost #lägger till hpboosten från looten till spelaren
-    if len(player.inventory)-1 >= player.max_inventory: #kollar om spelarns inventory är fuult om det är det så skickar den en till playerlootremove
-        playerlootremove(player)
+    if len(player.inventory)-1 >= player.max_inventory: #kollar om spelarns inventory är fullt om det är det så skickar den en till playerlootoverflow
+        playerlootoverflow(player)
     else:
         pass
     
     return player
 
-
- 
-
-def playerlootremove(player): 
+def playerlootoverflow(player): 
     print(f"På de {len(player.inventory)-1} raderna under finns de föremål du har i ditt inventory")# här printar vi ut hur många rader med text som handlar om looten i inventoryt, anledningen till att vi kör -1 är för att vi har även lagt till skattskite itemet och de vill vi inte visa, eftersom de inte ska ligga där igentligen
     for i in range (len(player.inventory)-1): #samma procedur med -1 som innan fast här så printar den faktiskt ut allt i inventoryt
         item = player.inventory[i]
@@ -197,9 +198,7 @@ def playerlootremove(player):
                     print("Snälladu skriv en av siffrorna bredvid dina items!!") 
                 else:
                     print(f"Du kastade ut ett/en {player.inventory[int(val)].itemname}")#om man har lyckats skriva in en siffra som man får skriva så printar programet namnet på itemet och att det kommer kastas ut
-                    player.power -= (player.inventory[int(val)]).powerboost# här tar vi bort power boosten looten har gett oss så inte boosten finns kvar när spelaren inte innehaver saken
-                    player.max_hp -= (player.inventory[int(val)]).hpboost#samma som den innan fast med hg
-                    player.inventory.pop(int(val))#här tar vi bort saken från inventoryt genom att poppa den från listan
+                    player = playerlootremove(player,player.inventory[int(val)])#här kallar vi på loot remove och anger player och itemet som är val som en integer.
                     break # här breakar vi loppen som raderar looten
             break#här breakas den stora loopen där man får välja om man vill kasta ut från inventoryt eller de man just tog upp
         else:
@@ -221,6 +220,17 @@ def playerlootcheck(player): #denna används när spelaren vill kolla vad som fi
                 print(f"{i}  din {lootitem.itemname} som har en hp boost på {lootitem.hpboost}")
 
     return player
+
+def trap(player):    # fälla så man tappar något i inventoryt.
+    if len(player.inventory) <= 0:  # kollar om inventoryt är tomt.
+        print("Hallå där din fattiga bondlurk, du har ingenting i din pung!")
+        player.name = "Bondlurken" # Byter namn på spelaren om den inte har någonting i inventoryt.
+    elif len(player.inventory) > 0: #detta betyder att om spelaren har något i inventoryt så ska den köra
+        x = rand.randint(0,((len(player.inventory))-1)) #sparar vi ett random tal i variabeln x som är mellan 0 och antallet föremål i listan
+        itemname = player.inventory[x].itemname #sparar lootens namn i variabeln itemname för det går ej att göra efter man tagit och raderat saken ur sitt inventory.
+        player = playerlootremove(player, x)   # kallar på player loot remove och tar bort det slumpade itemet från inventoryt
+        print(f"Du tappade en/ett {itemname} från din pung på grund av en fälla😵‍💫🪤!!")#printar text 
+    return player  
                 
 def lootchest (player): #här finns funktionen som öppnar en kista
     x = rand.choice(lootlist) #plockar random från lootlistan, som innehåller olika loot med olika chans att få
@@ -229,11 +239,13 @@ def lootchest (player): #här finns funktionen som öppnar en kista
     return player
 
 def randportal(player):       # slumpmässigt val mellan skattkista eller fightas en mantis.
-    x = rand.randint(0,11)
-    if x <= 8:
-        fight(player)        # större chans att man får fightas mot mantis.
+    x = rand.randint(0,12)
+    if x <= 8:    # större chans att man får fightas mot mantis.
+        fight(player)        
+    elif x < 10:
+        player = lootchest(player) # kallar på lootchest
     else:
-        lootchest(player)
+        player = trap(player) # kallar på trapen
 
     return player
 
@@ -318,13 +330,13 @@ def main():
 
             elif val == "5":
                 save_game(Player1)
+          
 
             elif val == "q":
                 exit(0)
             else:
                 print("Du måste välja något av valen i menyn")
             
-
 if __name__ == "__main__":
     main()
 print("Better luck next time BUDDY!")

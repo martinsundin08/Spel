@@ -1,10 +1,8 @@
 import json
 
-
 def save_game(player):
      with open("savefile.json", mode = "w", encoding='utf-8') as write_file:
           json.dump(player.to_dict(), write_file, indent = 3, ensure_ascii=True)
-
 
 def load_save_file(PlayerClass):
      
