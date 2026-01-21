@@ -1,19 +1,12 @@
 {
-   "name": "Jerre",
-   "power": 2.4,
+   "name": "johannes",
+   "power": 0.7,
    "max_hp": 5,
-   "max_inventory": 2,
-   "role": "Fritidschefen",
+   "max_inventory": 8,
+   "role": "pungr\u00e5tta",
    "alive": true,
-   "inventory": [
-      {
-         "itemname": "spjut",
-         "itemtype": "Weapond",
-         "powerboost": 1.4,
-         "HPboost": 0
-      }
-   ],
-   "hp": 3,
-   "level": 1,
-   "xp": 6
+   "inventory": [],
+   "hp": 5,
+   "level": 0,
+   "xp": 0
 }

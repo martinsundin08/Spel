@@ -159,9 +159,9 @@ def heal(player):       # vila för att få 1 hp
 
 def playerlootremove(player, pos):
     print(pos)  
-    player.power -= (player.inventory[pos]).powerboost# här tar vi bort power boosten looten har gett oss så inte boosten finns kvar när spelaren inte innehaver saken
-    player.max_hp -= (player.inventory[pos]).hpboost#samma som den innan fast med hg
-    player.inventory.pop(pos)   
+    player.power -= player.inventory[pos].powerboost # här tar vi bort power boosten looten har gett oss så inte boosten finns kvar när spelaren inte innehaver saken
+    player.max_hp -= player.inventory[pos].hpboost #samma som den innan fast med hg
+    player.inventory.pop(int(pos))   
     return player
       
 def playerlootadd(player,loot): 
@@ -207,7 +207,7 @@ def playerlootoverflow(player):
                     print("Snälladu skriv en av siffrorna bredvid dina items!!") 
                 else:
                     print(f"Du kastade ut ett/en {player.inventory[int(val)].itemname}")#om man har lyckats skriva in en siffra som man får skriva så printar programet namnet på itemet och att det kommer kastas ut
-                    player = playerlootremove(player,player.inventory[int(val)])#här kallar vi på loot remove och anger player och itemet som är val som en integer.
+                    player = playerlootremove(player,int(val))#här kallar vi på loot remove och anger player och itemet som är val som en integer.
                     break # här breakar vi loppen som raderar looten
             break#här breakas den stora loopen där man får välja om man vill kasta ut från inventoryt eller de man just tog upp
         else:
@@ -339,8 +339,10 @@ def main():
 
             elif val == "5":
                 save_game(Player1)
-          
 
+            elif val == "6":
+                Player1 = playerlootadd(Player1, Sword)
+            
             elif val == "q":
                 exit(0)
             else:
